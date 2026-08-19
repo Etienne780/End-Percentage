@@ -1,0 +1,17 @@
+{
+	"geode": "5.9.0",
+	"gd": {
+		"win": "2.2081",
+		"android": "2.2081",
+		"mac": "2.2081",
+		"ios": "2.2081"
+	},
+	"id": "etienne780.end-percentage",
+	"name": "End-Percentage",
+	"version": "v1.0.0",
+	"developer": "Etienne780",
+	"description": "A Geometry Dash Geode mod that lets you set a custom end percentage for levels",
+	"dependencies": {
+		"geode.node-ids": ">=v1.23.3"
+	}
+}
