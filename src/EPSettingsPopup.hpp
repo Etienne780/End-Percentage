@@ -170,6 +170,12 @@ protected:
     void onResetBtn(CCObject*) {
         auto deleted = deleteLevelSettings(m_currentLevel);
 
+        m_inputToggle->toggle(false);
+        m_input->setEnabled(false);
+        m_input->setString("100", false);
+
+        m_initSettings = LevelEndPercentage{};
+
         log::info(
             "Deleting level '{}': settings {}",
             m_currentLevel ? m_currentLevel->m_levelName : "null level",
