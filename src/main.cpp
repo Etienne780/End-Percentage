@@ -1,7 +1,7 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PauseLayer.hpp>
 #include <Geode/modify/PlayLayer.hpp>
-#include <Geode/modify/GameLevelmanager.hpp>
+#include <Geode/modify/GameLevelManager.hpp>
 
 #include "./EPSettingsPopup.hpp"
 #include "./EPSettings.hpp"
