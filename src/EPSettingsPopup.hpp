@@ -40,6 +40,8 @@ protected:
             m_initSettings = LevelEndPercentage{};
         }
 
+        resetElements(&m_initSettings);
+
         return true;
     }
 
@@ -87,7 +89,6 @@ protected:
         m_input = geode::TextInput::create(100.f, "Percentage", "bigFont.fnt");
         m_input->setFilter("0123456789.");
         m_input->setMaxCharCount(5);
-        m_input->setString("100", false);
 
         inputBox->addChild(m_input);
 
@@ -97,7 +98,6 @@ protected:
             0.8f
         );
 
-        m_inputToggle->toggle(false);
         inputBox->addChild(m_inputToggle);
 
         inputBox->updateLayout();
@@ -160,6 +160,19 @@ protected:
         geode::Popup::onClose(sender);
     }
 
+    void resetElements(LevelEndPercentage* settings = nullptr) {
+        bool enabled = settings ? settings->enabled : false;
+        float percentage = settings ? settings->percentage : 100;
+        
+        if (m_inputToggle)
+            m_inputToggle->toggle(enabled);
+        
+        if (m_input) {
+            m_input->setEnabled(enabled);
+            m_input->setString(fmt::format("{}", percentage), false);
+        }
+    }
+
     void onInputToggle(CCObject*) {
         if (!m_input || !m_inputToggle)
             return;
@@ -170,11 +183,8 @@ protected:
     void onResetBtn(CCObject*) {
         auto deleted = deleteLevelSettings(m_currentLevel);
 
-        m_inputToggle->toggle(false);
-        m_input->setEnabled(false);
-        m_input->setString("100", false);
-
         m_initSettings = LevelEndPercentage{};
+        resetElements(&m_initSettings);
 
         log::info(
             "Deleting level '{}': settings {}",
