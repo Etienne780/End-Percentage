@@ -3,9 +3,11 @@
 #include <Geode/modify/PlayLayer.hpp>
 
 #include "./EPSettingsPopup.hpp"
+#include "./EPSettings.hpp"
 
 using namespace geode::prelude;
 
+// ----- Pause-Menu-Button and Popup ------------------------
 class $modify(EPPauseLayer, PauseLayer) {
 
     void customSetup() {
@@ -41,4 +43,55 @@ class $modify(EPPauseLayer, PauseLayer) {
         popup->show();
     }
 
+};
+
+// ----- Display corrected percentage ------------------------
+class $modify(EPPlayLayer, PlayLayer) {
+public:
+    struct Fields {
+        bool getSettings = true;
+        bool hasSettings = false;
+        LevelEndPercentage currentSettings;
+    };
+
+    void onExit() {
+        m_fields->getSettings = true;
+        PlayLayer::onExit();
+    }
+
+    float getCurrentPercent() {
+        float real = PlayLayer::getCurrentPercent();
+
+        if (!m_level) {
+            m_fields->hasSettings = false;
+            m_fields->getSettings = false;
+            return real;
+        }
+
+        if (m_fields->getSettings) {
+            auto result = getLevelSettings(m_level);
+
+            if (result) {
+                m_fields->currentSettings = *result;
+                m_fields->hasSettings = true;
+            }
+            else {
+                m_fields->currentSettings = LevelEndPercentage{};
+                m_fields->hasSettings = false;
+            }
+        
+            m_fields->getSettings = false;
+        }
+
+        if (!m_fields->hasSettings)
+            return real;
+
+        const auto& settings = m_fields->currentSettings;
+
+        if (!settings.enabled || settings.percentage <= 0.f)
+            return real;
+
+        float scaled = real / static_cast<float>(settings.percentage) * 100.f;
+        return std::min(scaled, 100.f);
+    }
 };
