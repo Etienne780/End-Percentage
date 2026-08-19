@@ -15,6 +15,9 @@
 		"geode.node-ids": ">=v1.23.3",
 		"cvolton.level-id-api": ">=2.0.0"
 	},
+	"links": {
+	    "source": "https://github.com/Etienne780/End-Percentage"
+	},
 	"resources": {
         "sprites": [
             "resources/*.png"
