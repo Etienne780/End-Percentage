@@ -1,6 +1,7 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PauseLayer.hpp>
 #include <Geode/modify/PlayLayer.hpp>
+#include <Geode/modify/GameLevelmanager.hpp>
 
 #include "./EPSettingsPopup.hpp"
 #include "./EPSettings.hpp"
@@ -93,5 +94,23 @@ public:
 
         float scaled = real / static_cast<float>(settings.percentage) * 100.f;
         return std::min(scaled, 100.f);
+    }
+};
+
+// ----- free deleted levels ------------------------
+class $modify(EPGameLevelmanager, GameLevelManager) {
+public:
+    void deleteLevel(GJGameLevel* level) {
+        if (level) {
+            auto deleted = deleteLevelSettings(level);
+
+            log::info(
+                "Deleting level '{}': settings {}",
+                level->m_levelName,
+                deleted ? "removed" : "not found"
+            );
+        }
+
+        GameLevelManager::deleteLevel(level);
     }
 };
