@@ -10,8 +10,14 @@
 	"name": "End-Percentage",
 	"version": "v1.0.0",
 	"developer": "Etienne780",
-	"description": "A Geometry Dash Geode mod that lets you set a custom end percentage for levels",
+	"description": "Custom end percentage for levels",
 	"dependencies": {
-		"geode.node-ids": ">=v1.23.3"
-	}
+		"geode.node-ids": ">=v1.23.3",
+		"cvolton.level-id-api": ">=2.0.0"
+	},
+	"resources": {
+        "sprites": [
+            "resources/*.png"
+        ]
+    }
 }
