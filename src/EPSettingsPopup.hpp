@@ -6,13 +6,15 @@
 #include <Geode/ui/TextInput.hpp>
 #include <Geode/ui/Button.hpp>
 
+#include "./EPSettings.hpp"
+
 using namespace geode::prelude;
 
 class EPSettingsPopup : public Popup {
 public:
-    static EPSettingsPopup* create() {
+    static EPSettingsPopup* create(GJGameLevel* level) {
         auto popup = new EPSettingsPopup{};
-        if (popup->init()) {
+        if (popup->init(level)) {
             popup->autorelease();
             return popup;
         }
@@ -21,10 +23,27 @@ public:
     }
 
 protected:
+    GJGameLevel* m_currentLevel = nullptr;
     TextInput* m_input = nullptr;
     CCMenuItemToggler* m_inputToggle = nullptr;
+    LevelEndPercentage m_initSettings;
 
-    bool init() {
+    bool init(GJGameLevel* level) {
+        if (!initPopup())
+            return false;
+
+        m_currentLevel = level;
+        auto result = getLevelSettings(level);
+        if (result) {
+            m_initSettings = *result;
+        } else {
+            m_initSettings = LevelEndPercentage{};
+        }
+
+        return true;
+    }
+
+    bool initPopup() {
         constexpr float width = 300.f;
         constexpr float height = 160.f;
 
@@ -116,6 +135,31 @@ protected:
         return true;
     }
 
+    void onClose(CCObject* sender) override {
+        bool enabled = m_perToggle->isToggled();
+        float percentage = 100;
+
+        auto value = geode::utils::numFromString<float>(
+            m_perInput->getString()
+        );
+
+        if (value) {
+            percentage = std::clamp(*value, 0.f, 100.f);
+        }
+
+        if (m_initSettings.enabled != enabled ||
+            m_initSettings.percentage != percentage) {
+            
+            LevelEndPercentage settings;
+            settings.enabled = enabled;
+            settings.percentage = percentage;
+
+            setLevelSettings(m_currentLevel, settings);   
+        }
+
+        geode::Popup::onClose(sender);
+    }
+
     void onInputToggle(CCObject*) {
         if (!m_input || !m_inputToggle)
             return;
@@ -124,6 +168,13 @@ protected:
     }
 
     void onResetBtn(CCObject*) {
+        auto deleted = deleteLevelSettings(m_currentLevel);
 
+        log::info(
+            "Deleting level '{}': settings {}",
+            m_currentLevel ? m_currentLevel->m_levelName : "null level",
+            deleted ? "removed" : "not found"
+        );
     }
+
 };

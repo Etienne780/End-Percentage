@@ -1,5 +1,6 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PauseLayer.hpp>
+#include <Geode/modify/PlayLayer.hpp>
 
 #include "./EPSettingsPopup.hpp"
 
@@ -30,7 +31,13 @@ class $modify(EPPauseLayer, PauseLayer) {
     }
 
     void onEPPopupOpened(CCObject*) {
-        auto popup = EPSettingsPopup::create();
+        auto playLayer = PlayLayer::get();
+
+        if (!playLayer || !playLayer->m_level)
+            return;
+
+        auto* level = playLayer->m_level;
+        auto popup = EPSettingsPopup::create(level);
         popup->show();
     }
 
