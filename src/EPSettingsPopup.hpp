@@ -136,11 +136,11 @@ protected:
     }
 
     void onClose(CCObject* sender) override {
-        bool enabled = m_perToggle->isToggled();
+        bool enabled = m_inputToggle->isToggled();
         float percentage = 100;
 
         auto value = geode::utils::numFromString<float>(
-            m_perInput->getString()
+            m_input->getString()
         );
 
         if (value) {
