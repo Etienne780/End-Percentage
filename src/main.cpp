@@ -14,9 +14,9 @@ class $modify(EPPauseLayer, PauseLayer) {
         if (!sideMenu) 
             return;
 
-        auto sprite = CCSprite::createWithSpriteFrameName("end_percentageBtn.png"_spr);
+        auto sprite = CCSprite::create("end_percentageBtn.png"_spr);
         sprite->setPosition(sprite->getContentSize() / 2);
-        sprite->setScale(0.77f);
+        sprite->setScale(0.75f);
         auto button = CCMenuItemSpriteExtra::create(
             sprite,
             nullptr,
