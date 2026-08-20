@@ -11,6 +11,7 @@
 	"version": "v1.0.1",
 	"developer": "Etienne780",
 	"description": "Custom end percentage for levels",
+	"tags": ["utility", "offline"],
 	"dependencies": {
 		"geode.node-ids": ">=v1.23.3",
 		"cvolton.level-id-api": ">=2.0.0"
