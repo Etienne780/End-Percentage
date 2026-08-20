@@ -8,7 +8,7 @@
 	},
 	"id": "etienne780.end-percentage",
 	"name": "End-Percentage",
-	"version": "v1.0.1",
+	"version": "v1.1.1",
 	"developer": "Etienne780",
 	"description": "Custom end percentage for levels",
 	"tags": ["utility", "offline"],
